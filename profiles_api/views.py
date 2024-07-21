@@ -2,6 +2,7 @@ from django.shortcuts import render
 from rest_framework.views import APIView # type: ignore
 from rest_framework.response import Response # type: ignore
 from rest_framework import status # type: ignore
+from rest_framework import viewsets
 from .serializers import HelloSerializer
 
 # Create your views here.
@@ -53,3 +54,55 @@ class HelloApiView(APIView):
         """Handles deletion of an object"""
 
         return Response({'method': 'DELETE'})
+
+
+class HelloViewSet(viewsets.ViewSet):
+    """Test API ViewSet"""
+
+    serializer_class = HelloSerializer
+
+    def list(self, request):
+        """Returns a hello message"""
+
+        a_viewset = [
+            'Uses actions (list, create, retrieve, update, partial_update)',
+            'Automatically maps to URLs using Routers',
+            'Provides more functionality with less code',
+        ]
+
+        return Response({'message': 'Hello!', 'a_viewset': a_viewset})
+
+    def create(self, request):
+        """Creates a new hello message"""
+
+        serializer = self.serializer_class(data=request.data)
+
+        if serializer.is_valid():
+            name = serializer.validated_data.get('name')
+            message = f'Hello {name}'
+            return Response({'message': message})
+        else:
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+    def retrieve(self, request, pk=None):
+        """Retrieves the data by its ID"""
+
+        return Response({'message': 'GET'})
+
+    def update(self, request, pk=None):
+        """Updates an object by its ID"""
+
+        return Response({'message': 'PUT'})
+
+    def partial_update(self, request, pk=None):
+        """Updates part of an object by its ID"""
+
+        return Response({'message': 'PATCH'})
+
+    def destroy(self, request, pk=None):
+        """Deletes an object by its ID"""
+
+        return Response({'message': 'DELETE'})
