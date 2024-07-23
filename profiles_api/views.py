@@ -1,9 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render # type: ignore
 from rest_framework.views import APIView # type: ignore
 from rest_framework.response import Response # type: ignore
 from rest_framework import status # type: ignore
-from rest_framework import viewsets
-from .serializers import HelloSerializer
+from rest_framework import viewsets # type: ignore
+from .serializers import HelloSerializer, UserProfileSerializer
+from .models import UserProfile
+from .permissions import UpdateOwnProfile
+from rest_framework.authentication import TokenAuthentication # type: ignore
 
 # Create your views here.
 
@@ -106,3 +109,12 @@ class HelloViewSet(viewsets.ViewSet):
         """Deletes an object by its ID"""
 
         return Response({'message': 'DELETE'})
+
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handles creating and updating profiles"""
+
+    serializer_class = UserProfileSerializer
+    queryset = UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication, )
+    permission_classes = (UpdateOwnProfile, )
