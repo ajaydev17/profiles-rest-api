@@ -1,12 +1,13 @@
-from django.shortcuts import render # type: ignore
-from rest_framework.views import APIView # type: ignore
-from rest_framework.response import Response # type: ignore
-from rest_framework import status # type: ignore
-from rest_framework import viewsets # type: ignore
+from django.shortcuts import render  # type: ignore
+from rest_framework.views import APIView  # type: ignore
+from rest_framework.response import Response  # type: ignore
+from rest_framework import status  # type: ignore
+from rest_framework import viewsets  # type: ignore
 from .serializers import HelloSerializer, UserProfileSerializer
 from .models import UserProfile
 from .permissions import UpdateOwnProfile
-from rest_framework.authentication import TokenAuthentication # type: ignore
+from rest_framework.authentication import TokenAuthentication  # type: ignore
+from rest_framework import filters  # type: ignore
 
 # Create your views here.
 
@@ -118,3 +119,5 @@ class UserProfileViewSet(viewsets.ModelViewSet):
     queryset = UserProfile.objects.all()
     authentication_classes = (TokenAuthentication, )
     permission_classes = (UpdateOwnProfile, )
+    filter_backends = (filters.SearchFilter, )
+    search_fields = ('name', 'email', )
