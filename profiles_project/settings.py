@@ -25,8 +25,16 @@ SECRET_KEY = '99**#z*24qlt&b**d%g%4(_po#pfh7a%6_nycq(&*_*vj0gxb('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# if we deploy this to AWS instance then follow code should be uncommented
+# DEBUG = bool(int(os.environ.get('DEBUG', 1)))
+
 ALLOWED_HOSTS = []
 
+# if we deploy this to AWS instance then follow code should be uncommented
+# ALLOWED_HOSTS = [
+#     'EC2 IP address',
+#     '127.0.0.1'
+# ]
 
 # Application definition
 
@@ -123,3 +131,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'profiles_api.UserProfile'
+
+# if we deploy this to AWS instance then follow code should be uncommented, i.e for collecting static files
+# STATIC_ROOT = 'static/'
